@@ -3,17 +3,17 @@
 
 
 (defvar spec
-	(alw
+	(alw ;invariant of our system is:
 		( &&
-			(!! (&& (-P- on) (-P- off)))
+			(!! (&& (-P- on) (-P- off)));not (on and off)
 			 ; (<->  (-P- lamp) (since (!! (-P- off)) (-P- on)))
-			 (-> (-P- on) (lasts (!!(-P- on)) 5))
-			 (-> (&& (!!(-P- lamp)) (yesterday(-P- lamp))) (|| (-P- off) (lasted (-P- lamp) 5)))
+			 (-> (-P- on) (lasts (!!(-P- on)) 5));on implies not on for 5 instants
+			 (-> (&& (!!(-P- lamp)) (yesterday(-P- lamp))) (|| (-P- off) (lasted (-P- lamp) 5))); lamp switched off implies button off or timeout
 )))
 
 
 (defconstant init
-	(&& (!! (-P- lamp))))
+	(&& (!! (-P- lamp))));begins lamp off
 
 ; (format t "~S" *spec*)
 (ae2sbvzot:zot 10
