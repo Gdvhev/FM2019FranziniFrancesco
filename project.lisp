@@ -31,8 +31,6 @@
             (-E- p1 *ncells* (-E- p2 *ncells* (&& (/= p1 p2) (-P- robotIn p1) (next (-P- robotIn p2))));the robot is moving if current position and future position are different
            ))
            
-           
-           
         )
 )
 
@@ -84,6 +82,22 @@
             (-> (&& (-P- robotWorking) (next (-P- robotIn 9)) (-P- robotIn 9))  (next (-P- robotWorking))) ;If I am working in 9 and I don't move, keep working
             
 ))) 
+
+
+(defconstant robotController
+    (alw (&&
+            (!! (&& (-P- collision) (-P- robotMoving)));This means that the controller stops the robot if an operator is in the same cell
+            
+            ;Entering an area where an operator is going is not acceptable(assuming next operator position is known)
+            (-A- p *ncells* (-> (&& (next (-P- operatorIn p)) (-P- robotMoving) )  (!!(next (-P- robotIn p))) ))
+    
+            ;If robot is going to 9 and it is in an adjacent cell to it, either it goes to destination or it is blocked by operator and stops, no useless deviation
+            (-> (-P- robotToL9) (-> (-E- p *ncells* (&& (-P- robotIn p) (adjacent p 9))) #|implies|# (|| (next (-P- robotIn 9)) (&& (next(-P- operatorIn 9)) (!! (-P- robotMoving)) ) )  ))
+            
+            ;If robot is going to 3 and it is in an adjacent cell to it, either it goes to destination or it is blocked by operator and stops, no useless deviation
+            (-> (-P- robotToL3) (-> (-E- p *ncells* (&& (-P- robotIn p) (adjacent p 3))) #|implies|# (|| (next (-P- robotIn 3)) (&& (next(-P- operatorIn 3)) (!! (-P- robotMoving)) ) )  ))
+
+)))
 
 ;OPERATOR Specification
 (defconstant operatorPredicates
@@ -140,9 +154,15 @@
 (defconstant init
     (&&
             (-P- robotIn 3)
-            ;(next(-P- robotIn 9))
             (-P- operatorIn 10)
-            (-P- robotWorking);;Reset this
+            (-P- robotWorking)
+            
+            ;debug
+            ;(-P- robotIn 5)
+            ;(-P- operatorIn 6)
+            ;(-P- robotToL9)
+            ;(next(-P- robotIn 10))
+            ;(next(-P- operatorIn 10))
             ))
     
 ;Objective property
@@ -152,20 +172,23 @@
 ))
 
 (defconstant collisionEnforcer
-    (somF
-        (&& (-P- collision) (-P- robotMoving))
-))
+    ;(somF (&& (-P- collision) (-P- robotMoving))) ;Moving collision
+    ;(somF  (-P- collision) ) ;Simple collision
+    (somF (|| (&& (-P- collision) (-P- robotMoving)) (&& (next (-P- collision)) (-P- robotMoving))  )) ;Moving collision and converging to operator position 
+)
     
-(ae2sbvzot:zot 10
+(ae2sbvzot:zot 30
         (yesterday(&&
                     
                     init
+                    
                     ;Robot axioms
                     forbiddenPlaces
                     robotPredicates
                     realisticRobotMovement
                     robotAlwaysSomewhere
                     robotState
+                    robotController
                     
                     ;Operator axioms
                     operatorPredicates
