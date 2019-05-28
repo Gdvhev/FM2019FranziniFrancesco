@@ -1,10 +1,40 @@
 \subsection{Model}
 This section contains the TRIO specification ....
 
+\paragraph{Auxiliary predicates and functions}:\\
 
-%\lstinputlisting[language=Lisp]{../project.lisp}
+\textit{Adjacent} checks possible any adjacency while avoiding border issues. A detailed explanation of each condition is given in the Zot file comments.
+\begin{align*}
+	Alw(\forall n1,n2 (adjacent(n1 n2)\iff (\\
+	(n1 = n2) \lor \\
+	((n1 \neq 4)\land(n1 \neq 8)\land(n1 \neq 12)\land((n2=n1+1)\lor(n2=n1-3)))\lor \\
+	((n1 \neq 1)\land(n1 \neq 5)\land(n1 \neq 9)\land((n2=n1-1)\lor(n2=n1+3)))\lor \\
+	(n2 = n1\pm 4) \lor \\
+	((n1 \neq 4)\land(n2 = n1+ 5)) \lor \\
+	((n1 \neq 9)\land(n2 = n1- 5))  \\
+	)))
+\end{align*}
 
-\subsection{Verification}
+\textit{Collision} checks if operator and robot are in the same cell.
+
+\begin{align*}
+	Alw(collision()\iff (\exists p(
+	(robotIn(p)) \land 
+	(operatorIn(p)) 
+	)))
+\end{align*}
+
+
+\paragraph{Robot}:\\
+
+
+\paragraph{Operator}:\\
+
+\paragraph{Collision}:\\
+
+\paragraph{Simulation}:\\
+
+\subsection{Verification}:\\
 AAA.....
 \vspace{10mm}
 

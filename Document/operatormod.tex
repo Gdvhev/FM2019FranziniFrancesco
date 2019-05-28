@@ -1,4 +1,14 @@
 
 \subsection{Operator Model}
-%\label{sec:userchar}
+The operator has been modeled in the same way as the robot as far as the FSM is concerned. Since the operator is not an agent that is controllable by our system, it has no controller and can go wherever he or she wants: it will be the robot's duty to prevent accidents.
 
+The FSM description is omitted as it is identical to the one given for the robot, just substituting L9 with L10 and L3 with L8 gives the operator's automaton.
+As with the robot, axioms for model integrity have been added:
+
+\begin{itemize}
+	\item \textbf{Forbidden place}: The operator cannot be in L4
+	
+	\item \textbf{Realistic movement}: The operator can only move by one cell at a time
+	
+	\item \textbf{Unique position}: The operator is in one and only one cell at each time instant
+\end{itemize}

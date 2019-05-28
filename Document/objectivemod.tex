@@ -1,4 +1,20 @@
 
-\subsection{Simulation model}
-%\label{sec:userchar}
+\subsection{Simulation Model}
+The simulation part of the model consists in very simple axioms that are used to define the predicates used by operator and robot models and the safety property to be verified.
+
+A complete specification is present in Section 3, but the main ones are:
+\begin{itemize}
+	\item \textbf{Init}: Initial conditions for the system
+	\begin{itemize}
+		\item Robot is in L3 in state RobotWorking
+		\item Operator is in L10 in state OperatorWorking
+	\end{itemize}
+	
+	\item \textbf{Collision Predicate}: A predicate that is true iff the robot and operator are in the same cell
+	
+	\item \textbf{Nice Simulation(Optional)}: Forces the simulation to do at least a loop for both the robot and operator. This is not guaranteed by just the model since the paths taken are left completely free from constraints and could never reach the destination cells within the set bound.
+	
+	
+	\item \textbf{Collision Enforcing}: Enforces that sometime in the future there will be a collision with the robot moving into or out from the operator cell. This makes our model unsatisfiable, meaning that no such collision can happen.
+\end{itemize}
 

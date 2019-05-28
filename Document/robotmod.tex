@@ -1,3 +1,56 @@
 \subsection{Robot Model}
 
+The robot has been modeled as a 3-state FSM that governs the movement around the grid and is managed by a simple controller that is in charge of avoiding collisions. At each time instant the controller+FSM will consider the current state of the grid and force the updates of the robot state in the model.
 
+Here follows a description of the actions taken for each state by the FSM:
+\begin{itemize}
+	\item \textbf{RobotToL9}: In this state the robot is going to L9
+	\begin{itemize}
+		\item \textbf{Next position is L9}: Transition to \textit{RobotWorking}
+		\item \textbf{Next position is not L9}: Self loop
+	\end{itemize}
+
+	\item \textbf{RobotToL3}: In this state the robot is going to L3
+	\begin{itemize}
+		\item \textbf{Next position is L3}: Transition to \textit{RobotWorking}
+		\item \textbf{Next position is not L3}: Self loop
+	\end{itemize}
+
+	\item \textbf{RobotWorking}: In this state the robot is working at a station
+	\begin{itemize}
+		\item \textbf{Working in L9}:
+			\begin{itemize}
+				\item \textbf{Next state is RobotToL3}: Move away
+				\item \textbf{Next state is not RobotToL3}: Stay still
+			\end{itemize}
+		\item \textbf{Working in L3}:
+			\begin{itemize}
+				\item \textbf{Next state is RobotToL9}: Move away
+				\item \textbf{Next state is not RobotToL9}: Stay still
+			\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+It is a very simple representation and it is used mainly to keep track of what the robot was doing in the model.
+
+The controller is made of four main axioms:
+\begin{itemize}
+	\item \textbf{Safety lock}: If the operator is in the same area as the robot, the controller prevents the robot from moving
+	
+	\item \textbf{Collision avoidance}: The controller prevents the robot from entering an area where the operator is at the same time instant
+	
+	\item \textbf{Detour avoidance(x2, one for L3 and one for L9)}: If the robot is one cell away from its destination the controller halts it until that cell is free, to avoid detours
+\end{itemize}
+
+As required by the specification document, the controller does not enforce a particular path to destination.
+
+In addition to these, other axioms have been added in order to keep the grid model consistent with the specification:
+
+
+\begin{itemize}
+	\item \textbf{Forbidden place}: The robot cannot be in L4
+	
+	\item \textbf{Realistic movement}: The robot can only move by one cell at a time
+	
+	\item \textbf{Unique position}: The robot is in one and only one cell at each time instant
+\end{itemize}
