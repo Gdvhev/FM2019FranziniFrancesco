@@ -32,9 +32,46 @@ This section contains the TRIO specification ....
 
 \paragraph{Collision}:\\
 
+\textit{Collision enforcer} forces a collision between \textit{moving} robot and operator to happen, thus rendering the model unsatisfiable.
+
+\begin{align*}
+	Alw(CollisionEnforcer()\iff (somF(\\
+	(collision() \land robotMoving())\lor\\
+	(next(collision()) \land robotMoving())\\
+	)))
+\end{align*}
+
+
 \paragraph{Simulation}:\\
 
-\subsection{Verification}:\\
+\textit{Init} describes the model's initial configuration
+
+\begin{align*}
+	Alw(init()\iff (\\
+	(robotIn(3))\land robotWorking())\land \\
+	(operatorIn(10)\land operatorWorking()) \\
+	)
+\end{align*}
+
+
+\textit{Nice Simulation} forces the completion of a loop of both operator and robot
+\begin{align*}
+	Alw(NiceSimulation()\iff (\\
+	(next(\neg(robotIn(3)))) \land \\
+	(next(\neg(operatorIn(10)))) \land \\
+	(next(somF(robotWorking()\land robotIn(3)))) \land \\
+	(next(somF(operatorWorking()\land operatorIn(10)))) \land \\
+	))
+\end{align*}
+
+\textit{Forbidden places} invariant prevents robot and operator from going to L4
+
+\begin{align*}
+	Alw(\neg(robotIn(4)) \land \neg(operatorIn(4)))
+\end{align*}
+
+
+\subsection{Verification}
 AAA.....
 \vspace{10mm}
 
