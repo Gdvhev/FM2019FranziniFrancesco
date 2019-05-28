@@ -1,0 +1,67 @@
+\documentclass[a4paper]{article}
+\usepackage{tabularx}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage[justification=centering]{caption}
+\usepackage{listings}
+\usepackage{color}
+
+\hypersetup{
+	colorlinks=false,
+	pdfborder={0 0 0},
+}
+
+\author{Francesco Franzini}
+\title{FMCS Project}
+
+\begin{document}
+	
+\begin{titlepage}
+	\centering
+	\includegraphics[width=0.80\textwidth]{pictures/Logo_Politecnico_Milano}\par
+	\vspace{1.5cm}
+	{\LARGE \textbf {FMCS – 2019} \par}
+	\vspace{0.3cm}
+	{\large \textbf{Project} \par}
+	\vspace{1.5cm}
+	{\Large{} \par}
+	\vspace{1.5cm}
+	{\Large\itshape Francesco Franzini, matr.912857 \\}
+	\vspace{2cm}
+	\vfill
+	% Bottom of the page
+	{\large Document version: 1.0\par}
+	{\large \today \par}
+\end{titlepage}	
+	
+
+\maketitle
+\tableofcontents
+\clearpage
+
+\section{Introduction}
+\input{scope}
+\input{goals}
+
+\input{document_structure}
+\clearpage
+
+\section{Model description}
+\input{perspective}
+\input{assumptions}
+\input{robotmod}
+\input{operatormod}
+\input{objectivemod}
+\clearpage
+
+\section{TRIO Model}
+\input{definitions}
+\input{trio}
+\clearpage
+
+	
+\end{document}
