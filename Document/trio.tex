@@ -27,8 +27,136 @@ This section contains the TRIO specification ....
 
 \paragraph{Robot}:\\
 
+\textit{Robot Moving} is true if the robot is in another cell at next time instant
+
+\begin{align*}
+	Alw(robotMoving()\iff (\\
+	(\exists p1(\exists p2 (\\
+	((p1\neq p2)\land robotIn(p1) \land next(robotIn(p2))) )))\\
+	))
+\end{align*}
+
+\textit{Robot Always Somewhere} asserts that there is one and only one position for the robot at any time instant
+
+\begin{align*}
+	(alw(\exists a (\\
+	robotIn(a)\land\\
+	\neg(\exists b ((b\neq a)\land(robotIn(b))))\\
+	)))
+\end{align*}
+
+
+\textit{Realistic Robot Moving} forces the robot to move at maximum 1 cell per time instant (works if position is unique, as guaranteed by the previous invariant)
+
+\begin{align*}
+	(\forall a (alw(\\
+	((yesterday(robotIn(a)))\longrightarrow\\
+	(\exists b ((robotIn(b))\land(adjacent(a,b)))) )
+	)))
+\end{align*}
+
+
+\textit{Operator State} represents the robot FSM
+\begin{align*}
+	Alw(\\
+	(\neg(robotToL9()\land robotToL3())) \land\\
+	(\neg(robotWorking()\land robotToL9())) \land\\
+	(\neg(robotWorking()\land robotToL3())) \land\\
+	((robotWorking()\lor robotToL3()\lor robotToL9())) \land\\
+	\\
+	((robotToL9()\land next(robotIn(9)))\longrightarrow(next(robotWorking())))\land\\
+	((robotToL9()\land next(\neg robotIn(9)))\longrightarrow(next(robotToL9())))\land\\
+	\\
+	((robotToL3()\land next(robotIn(3)))\longrightarrow(next(robotWorking())))\land\\
+	((robotToL3()\land next(\neg robotIn(3)))\longrightarrow(next(robotToL3())))\land\\
+	\\
+	((robotWorking()\land next(robotWorking())\land robotIn(3))\longrightarrow(next(robotIn(3))))\land\\
+	((robotWorking()\land next(robotToL9())\land robotIn(3))\longrightarrow(next(\neg robotIn(3))))\land\\
+	((robotWorking()\land robotIn(3))\longrightarrow(next(\neg robotToL3)))\land\\
+	\\
+	((robotWorking()\land next(robotWorking())\land robotIn(9))\longrightarrow(next(robotIn(9))))\land\\
+	((robotWorking()\land next(robotToL3())\land robotIn(9))\longrightarrow(next(\neg robotIn(9))))\land\\
+	((robotWorking()\land robotIn(9))\longrightarrow(next(\neg robotToL9)))\land\\
+)
+\end{align*}
+
+\textit{Robot Controller} models a simple controller that drives the robot while avoiding moving collisions
+
+\begin{align*}
+	(alw\\
+	\text{;;If collision is true, the robot cannot go in moving state}\\
+	\neg(collision()\land robotMoving())\land \\
+	\\
+	\text{;;If robot is moving, it cannot go to the next position of the operator}\\
+	(\forall p((next(operatorIn(p))\land robotMoving())\longrightarrow(\neg next(robotIn(p)))))\land\\
+	\\
+	\text{;;If going to L9 and adjacent to it, the robot doesn't go there only if the operator is blocking}\\
+	(robotToL9()\longrightarrow(\\
+	\exists p(robotIn(p)\land adjacent(p,9))\longrightarrow(next(operatorIn(9))\lor \neg robotMoving())))\land\\
+	\\
+	\text{;;If going to L3 and adjacent to it, the robot doesn't go there only if the operator is blocking}\\
+	(robotToL3()\longrightarrow(\\
+	\exists p(robotIn(p)\land adjacent(p,3))\longrightarrow(next(operatorIn(3))\lor \neg robotMoving())))\land\\
+	)
+\end{align*}
+
 
 \paragraph{Operator}:\\
+
+\textit{Operator Moving} is true if the operator is in another cell at next time instant
+
+\begin{align*}
+	Alw(operatorMoving()\iff (\\
+	(\exists p1(\exists p2 (\\
+	((p1\neq p2)\land operatorIn(p1) \land next(operatorIn(p2))) )))\\
+	))
+\end{align*}
+
+\textit{Operator Always Somewhere} asserts that there is one and only one position for the operator at any time instant
+
+\begin{align*}
+	(alw(\exists a (\\
+	operatorIn(a)\land\\
+	\neg(\exists b ((b\neq a)\land(operatorIn(b))))\\
+	)))
+\end{align*}
+
+
+\textit{Realistic Operator Moving} forces the operator to move at maximum 1 cell per time instant
+
+\begin{align*}
+	(\forall a (alw(\\
+	((yesterday(operatorIn(a)))\longrightarrow\\
+	(\exists b ((operatorIn(b))\land(adjacent(a,b)))) )
+	)))
+\end{align*}
+
+
+\textit{Operator State} represents the operator FSM
+\begin{align*}
+	Alw(\\
+	(\neg(operatorToL10()\land operatorToL8())) \land\\
+	(\neg(operatorWorking()\land operatorToL10())) \land\\
+	(\neg(operatorWorking()\land operatorToL8())) \land\\
+	((operatorWorking()\lor operatorToL8()\lor operatorToL10())) \land\\
+	\\
+	((operatorToL10()\land next(operatorIn(10)))\longrightarrow(next(operatorWorking())))\land\\
+	((operatorToL10()\land next(\neg operatorIn(10)))\longrightarrow(next(operatorToL10())))\land\\
+	\\
+	((operatorToL8()\land next(operatorIn(8)))\longrightarrow(next(operatorWorking())))\land\\
+	((operatorToL8()\land next(\neg operatorIn(8)))\longrightarrow(next(operatorToL8())))\land\\
+	\\
+	((operatorWorking()\land next(operatorWorking())\land operatorIn(8))\longrightarrow(next(operatorIn(8))))\land\\
+	((operatorWorking()\land next(operatorToL10())\land operatorIn(8))\longrightarrow(next(\neg operatorIn(8))))\land\\
+	((operatorWorking()\land operatorIn(8))\longrightarrow(next(\neg operatorToL8)))\land\\
+	\\
+	((operatorWorking()\land next(operatorWorking())\land operatorIn(10))\longrightarrow(next(operatorIn(10))))\land\\
+	((operatorWorking()\land next(operatorToL8())\land operatorIn(10))\longrightarrow(next(\neg operatorIn(10))))\land\\
+	((operatorWorking()\land operatorIn(10))\longrightarrow(next(\neg operatorToL10)))\land\\
+	)
+\end{align*}
+
+
 
 \paragraph{Collision}:\\
 
