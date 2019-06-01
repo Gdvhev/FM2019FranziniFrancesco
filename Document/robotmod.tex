@@ -31,13 +31,13 @@ Here follows a description of the actions taken for each state by the FSM:
 	\end{itemize}
 \end{itemize}
 
-It is a very simple representation and it is used mainly to keep track of what the robot was doing in the model.
+It is a very simple representation and it is used mainly to keep track of what the robot is doing in the model while not enforcing particular choices on movements.
 
-The controller is made of four main axioms:
+The controller is made of four main parts:
 \begin{itemize}
 	\item \textbf{Safety lock}: If the operator is in the same area as the robot, the controller prevents the robot from moving
 	
-	\item \textbf{Collision avoidance}: The controller prevents the robot from entering an area where the operator is at the same time instant
+	\item \textbf{Collision avoidance}: The controller prevents the robot from entering an area where the operator is located
 	
 	\item \textbf{Detour avoidance(x2, one for L3 and one for L9)}: If the robot is one cell away from its destination the controller halts it until that cell is free, to avoid detours
 \end{itemize}

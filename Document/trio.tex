@@ -3,7 +3,7 @@ This section contains the TRIO specification of the model, along with the negate
 
 \paragraph{Auxiliary predicates and functions}:\\
 
-\textit{Adjacent} checks possible any adjacency while avoiding border issues. A detailed explanation of each condition is given in the Zot file comments.
+\textit{Adjacent} checks adjacency of cells while avoiding border issues. A detailed explanation of each condition is given in the Zot file comments.
 \begin{align*}
 	Alw(\forall n1,n2 (adjacent(n1 n2)\iff (\\
 	(n1 = n2) \lor \\
@@ -27,7 +27,7 @@ This section contains the TRIO specification of the model, along with the negate
 
 \paragraph{Robot}:\\
 
-\textit{Robot Moving} is true if the robot is in another cell at next time instant
+\textit{Robot Moving} is true iff the robot is in another cell at next time instant
 
 \begin{align*}
 	Alw(robotMoving()\iff (\\
@@ -80,7 +80,7 @@ This section contains the TRIO specification of the model, along with the negate
 	\\
 	((robotWorking()\land next(robotWorking())\land robotIn(9))\longrightarrow(next(robotIn(9))))\land\\
 	((robotWorking()\land next(robotToL3())\land robotIn(9))\longrightarrow(next(\neg robotIn(9))))\land\\
-	((robotWorking()\land robotIn(9))\longrightarrow(next(\neg robotToL9)))\land\\
+	((robotWorking()\land robotIn(9))\longrightarrow(next(\neg robotToL9)))\\
 )
 \end{align*}
 \newpage
@@ -97,18 +97,18 @@ This section contains the TRIO specification of the model, along with the negate
 	\\
 	\text{;;If going to L9 and adjacent to it, the robot doesn't go there only if the operator is blocking}\\
 	(robotToL9()\longrightarrow(\\
-	\exists p(robotIn(p)\land adjacent(p,9))\longrightarrow(next(operatorIn(9))\lor \neg robotMoving())))\land\\
+	\exists p((robotIn(p)\land adjacent(p,9))\longrightarrow(next(operatorIn(9))\lor \neg robotMoving()))))\land\\
 	\\
 	\text{;;If going to L3 and adjacent to it, the robot doesn't go there only if the operator is blocking}\\
 	(robotToL3()\longrightarrow(\\
-	\exists p(robotIn(p)\land adjacent(p,3))\longrightarrow(next(operatorIn(3))\lor \neg robotMoving())))\land\\
+	\exists p((robotIn(p)\land adjacent(p,3))\longrightarrow(next(operatorIn(3))\lor \neg robotMoving()))))\land\\
 	)
 \end{align*}
 
 
 \paragraph{Operator}:\\
 
-\textit{Operator Moving} is true if the operator is in another cell at next time instant
+\textit{Operator Moving} is true iff the operator is in another cell at next time instant
 
 \begin{align*}
 	Alw(operatorMoving()\iff (\\
@@ -165,7 +165,7 @@ This section contains the TRIO specification of the model, along with the negate
 
 \paragraph{Collision}:\\
 
-\textit{Collision enforcer} forces a collision between \textit{moving} robot and operator to happen, thus rendering the model unsatisfiable.
+\textit{Collision enforcer} forces a collision between \textit{moving} robot and operator to happen, thus rendering the model unsatisfiable if CollisionEnforcer() is asserted to be true in the beginning.
 
 \begin{align*}
 	Alw(CollisionEnforcer()\iff (somF(\\
