@@ -1,5 +1,5 @@
 \subsection{Model}
-This section contains the TRIO specification ....
+This section contains the TRIO specification of the model, along with the negated safety property.
 
 \paragraph{Auxiliary predicates and functions}:\\
 
@@ -38,6 +38,7 @@ This section contains the TRIO specification ....
 
 \textit{Robot Always Somewhere} asserts that there is one and only one position for the robot at any time instant
 
+\nopagebreak
 \begin{align*}
 	(alw(\exists a (\\
 	robotIn(a)\land\\
@@ -48,6 +49,7 @@ This section contains the TRIO specification ....
 
 \textit{Realistic Robot Moving} forces the robot to move at maximum 1 cell per time instant (works if position is unique, as guaranteed by the previous invariant)
 
+\nopagebreak
 \begin{align*}
 	(\forall a (alw(\\
 	((yesterday(robotIn(a)))\longrightarrow\\
@@ -56,7 +58,9 @@ This section contains the TRIO specification ....
 \end{align*}
 
 
-\textit{Operator State} represents the robot FSM
+\textit{Robot State} represents the robot FSM
+
+\nopagebreak
 \begin{align*}
 	Alw(\\
 	(\neg(robotToL9()\land robotToL3())) \land\\
@@ -79,6 +83,7 @@ This section contains the TRIO specification ....
 	((robotWorking()\land robotIn(9))\longrightarrow(next(\neg robotToL9)))\land\\
 )
 \end{align*}
+\newpage
 
 \textit{Robot Controller} models a simple controller that drives the robot while avoiding moving collisions
 
@@ -198,9 +203,83 @@ This section contains the TRIO specification ....
 	Alw(\neg(robotIn(4)) \land \neg(operatorIn(4)))
 \end{align*}
 
+In the Zot file the existential and universal quantifiers have been bound over a range 1..12. In order to have the same result in the TRIO model, we need to add an axiom that forces all position-dependent predicates to be false when the position is out of the grid. An alternative to this would be to add constraints on the quantified variable anytime a quantifier is used, but this would result in very bulky formulas.
+\begin{align*}
+	Alw(\forall p ((p\notin[1..12])\longrightarrow(\neg operatorIn(p)\land \neg robotIn(p))))
+\end{align*}
+
 
 \subsection{Verification}
-AAA.....
+Verification has been done by launching the Zot command	(ae2sbvzot:zot 30 (yesterday(\&\& ....) where the dots are replaced by all the various axioms.
+
+
 \vspace{10mm}
 
-Executing...
+Executing without forcing a moving collision to happen gives a satisfiable model and an example of execution.
+\begin{verbatim}
+
+2. SMT solving: z3...
+
+Evaluation took:
+1.027 seconds of real time
+0.002517 seconds of total run time (0.000000 user, 0.002517 system)
+0.29% CPU
+2,459,594,992 processor cycles
+32,752 bytes consed
+
+---SAT---
+------ time 0 ------
+ROBOTIN_3
+ROBOTWORKING
+OPERATORIN_10
+OPERATORMOVING
+ROBOTMOVING
+OPERATORWORKING
+------ time 1 ------
+ROBOTIN_2
+ROBOTTOL9
+OPERATORIN_7
+OPERATORMOVING
+OPERATORTOL8
+ROBOTMOVING
+------ time 2 ------
+(...)
+------ end ------
+
+Evaluation took:
+1.307 seconds of real time
+0.279757 seconds of total run time (0.247775 user, 0.031982 system) 
+[Run times consist of 0.045 seconds GC time,and 0.235 seconds non-GC time. ]
+21.42% CPU
+3,131,244,576 processor cycles
+374,595,232 bytes consed
+\end{verbatim}
+
+
+\vspace{10mm}
+
+Executing while forcing a moving collision instead gives an unsatisfiable model, so no valid execution is found.
+
+\begin{verbatim}
+2. SMT solving: z3...
+
+Evaluation took:
+1.141 seconds of real time
+0.002212 seconds of total run time (0.000000 user, 0.002212 system)
+0.18% CPU
+2,732,598,183 processor cycles
+32,736 bytes consed
+
+---UNSAT---
+Evaluation took:
+1.239 seconds of real time
+0.099738 seconds of total run time (0.096896 user, 0.002842 system)
+8.07% CPU
+2,966,105,379 processor cycles
+720,720 bytes consed
+
+\end{verbatim}
+
+
+
+Since the model is unsatisfiable when a collision is enforced(and normally satisfiable otherwise), it has been proven that no moving collision can happen and so the safety property is always verified.

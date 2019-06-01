@@ -224,7 +224,7 @@
 ))
 
 
-(ae2sbvzot:zot 20
+(ae2sbvzot:zot 30
         (yesterday(&&
                     
                     init
@@ -245,7 +245,7 @@
                     
                     ;Collision definition
                     collision
-                    ;collisionEnforcer
+                    collisionEnforcer ;Comment this out to have a satisfiable model, leave it in to check safety property
                     
                     ;Simulation guiding
                     niceSimulation

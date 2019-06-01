@@ -16,5 +16,6 @@ A complete specification is present in Section 3, but the main ones are:
 	
 	
 	\item \textbf{Collision Enforcing}: Enforces that sometime in the future there will be a collision with the robot moving into or out from the operator cell. This makes our model unsatisfiable, meaning that no such collision can happen.
+	Since the specification states that collisions are to be avoided when the robot is moving, this model considers a "moving collision" to be the robot moving while the operator is in the same cell or moving to where the operator is or will be at the next time instant.
 \end{itemize}
 

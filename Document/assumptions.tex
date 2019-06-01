@@ -17,16 +17,12 @@ The following assumptions had been taken into account for the design of the mode
 \newline\begin{itemize}
 	\item  \DI
 	\item  \DII
-	\item  \DIII
-	\item  \DIV
-	\item  \DV
-	\item  \DVI
-	\item  \DVII
-	\item  \DVIII
-	\item  \DIX
-	\item  \DX
-	\item  \DXI
+%	\item  \DIII
+%	\item  \DIV
+%	\item  \DV
+%	\item  \DVI
 \end{itemize}
 
-\paragraph{Constraints}
+The domain assumption D1 means that the sensors present on the grid are not only able to detect if the operator is moving, but also \textit{where} it is going. This enables the robot controller to move quite efficiently in cells that are around the operator. This assumption could be removed but, in order to keep the safety property true, every instance in the controller of \textit{next(operatorIn(cell))}) would have to be replaced with a quantification over all the cells that the operator could reach at the next time instant.
+\newpage
 
