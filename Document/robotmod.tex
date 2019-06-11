@@ -1,8 +1,8 @@
 \subsection{Robot Model}
 
-The robot has been modeled as a 3-state FSM that governs the movement around the grid and is managed by a simple controller that is in charge of avoiding collisions. At each time instant the controller+FSM will consider the current state of the grid and force the updates of the robot state in the model.
+The robot behavior has been modeled as a 3-state FSM that governs the movement around the grid and is managed by a simple controller that is in charge of avoiding collisions. At each time instant the controller+FSM will consider the current state of the grid and force the updates of the robot state in the model.
 
-Here follows a description of the actions taken for each state by the FSM:
+Here follows a description of the transitions taken for each state by the FSM:
 \begin{itemize}
 	\item \textbf{RobotToL9}: In this state the robot is going to L9
 	\begin{itemize}

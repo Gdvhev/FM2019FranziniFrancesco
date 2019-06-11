@@ -95,7 +95,7 @@ This section contains the TRIO specification of the model, along with the negate
 	\text{;;If robot is moving, it cannot go to the next position of the operator}\\
 	(\forall p((next(operatorIn(p))\land robotMoving())\longrightarrow(\neg next(robotIn(p)))))\land\\
 	\\
-	\text{;;If going to L9 and adjacent to it, the robot doesn't go there only if the operator is blocking}\\
+	\text{;;If going to L9 and adjacent to it, it doesn't go there only if it is blocked(detour avoidance)}\\
 	(robotToL9()\longrightarrow(\\
 	\exists p((robotIn(p)\land adjacent(p,9))\longrightarrow(next(operatorIn(9))\lor \neg robotMoving()))))\land\\
 	\\
@@ -165,7 +165,7 @@ This section contains the TRIO specification of the model, along with the negate
 
 \paragraph{Collision}:\\
 
-\textit{Collision enforcer} forces a collision between \textit{moving} robot and operator to happen, thus rendering the model unsatisfiable if CollisionEnforcer() is asserted to be true in the beginning.
+\textit{Collision enforcer} forces a collision between \textit{moving} robot and operator to happen. The model is made unsatisfiable when CollisionEnforcer() is asserted to be true in the beginning.
 
 \begin{align*}
 	Alw(CollisionEnforcer()\iff (somF(\\
@@ -210,7 +210,7 @@ In the Zot file the existential and universal quantifiers have been bound over a
 
 
 \subsection{Verification}
-Verification has been done by launching the Zot command	(ae2sbvzot:zot 30 (yesterday(\&\& ....) where the dots are replaced by all the various axioms.
+Verification has been done by launching the Zot command	(ae2sbvzot:zot 30 (yesterday(\&\& ....))) where the dots are replaced by all the various axioms.
 
 
 \vspace{10mm}
